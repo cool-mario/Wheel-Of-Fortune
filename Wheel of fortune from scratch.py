@@ -10,7 +10,7 @@
 ###################################################
 # Imports
 from tkinter import *
-import random, threading
+import random, threading, math
 ###################################################
 
 
@@ -65,6 +65,14 @@ def printWord(chosenWord):
     for char in chosenWord:
         thing += char + " "
     wordDisplay['text'] = thing
+    #wordDisplay.configure(width=int(math.sqrt(len(thing)))*2)
+    fontSize = (int(1002/(math.fabs(len(thing)))))
+    print(fontSize)
+    if fontSize > 50:
+        fontSize = 50
+    if fontSize < 30:
+        fontSize = 30
+    wordDisplay.configure(width=len(thing), font=("Courier new bold", fontSize))
 
 
 # We use this to capture the key's pressed
@@ -99,7 +107,7 @@ def submitButtonClick():
 
 def theGame():
     global total, guess, alphabet, buttonPressed, moneyDisplay
-    # Keep guessing until word is guessed correctly
+    # Keep guessing until word is guessed correctlyh434gtr43fr4t5styht34ahystr4a5s
     while True:
         while True:
             # Pick an random amount from amounts
@@ -200,7 +208,7 @@ def init():
     # This is a label
     wordDisplay = Label(root, text="Loading...", height=2, width=30)
     wordDisplay.configure(background='darkblue')
-    wordDisplay.configure(font=("Arial", 50))
+    wordDisplay.configure(font=("Courier New bold", 50))
     wordDisplay.configure(foreground='white')
     wordDisplay.place(relx=0.1, rely=0.05, anchor=NW)
     
