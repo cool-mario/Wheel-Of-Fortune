@@ -22,9 +22,12 @@ amounts = [500, 750, 1000, 1250, 1500, 1750, 5000]
 total = 0   # total $$$$
 
 wordDisplay = ""  # displays the dashes
-infoDisplay = ""  # the label that shows the information like money
+infoDisplay = ""  # the label that shows the information like how much each letter costs
+moneyDisplay = ""  # shows how much money you have, or the score
+
 letterGuessEntry = ""  # entry box to guess letters
 submitButton = ""     # button to submit your guess
+buttonPressed = False
 
 guess = ""   # this will be what the user guessed
 
@@ -69,8 +72,11 @@ def key_pressed(event):
     global wordDisplay, infoDisplay, root
 
     print("Key Pressed: " + event.char)
-    x = ord(event.char)
-    print("Key Value:   " + str(x))
+    try:
+        x = ord(event.char)
+        print("Key Value:   " + str(x))
+    except:
+        print("strange character pressed")
 
     str1 = "You pressed " + event.char
     #wordDisplay['text'] = str1
@@ -78,14 +84,21 @@ def key_pressed(event):
 def displayInfo(textInfo):
     global infoDisplay, root
     infoDisplay['text'] = textInfo
+    
+def displayMoney(textInfo):
+    global moneyDisplay
+    moneyDisplay['text'] = textInfo
 
 def submitButtonClick():
+    global buttonPressed
+    buttonPressed = True
     print("guess submitted")
+    
     
     
 
 def theGame():
-    global total, guess, alphabet
+    global total, guess, alphabet, buttonPressed, moneyDisplay
     # Keep guessing until word is guessed correctly
     while True:
         while True:
@@ -95,8 +108,13 @@ def theGame():
             letterGuessEntry.delete(0,END)
             guess = ""
             print(guess)
-            while len(guess) == 0:
+            while len(guess) == 0 or (not buttonPressed):
                 guess = letterGuessEntry.get().upper()
+                #print(len(guess))
+                #print(buttonPressed)
+            
+            
+            buttonPressed = False
             # If the user wants to guess phrase or word
             if guess == "GUESS":
                 while True:
@@ -123,7 +141,7 @@ def theGame():
                         break
                     if "_" not in dashes:
                         printWord(dashes)
-                        print("You have: $" + str(total))
+                        displayMoney("You have: $" + str(total))
                         break
                     else:
                         for char in range(len(dashes)):
@@ -149,7 +167,7 @@ def theGame():
                 # If user cannot buy vowel
                 else:
                     print("Not enough money")
-                print("You have: $" + str(total))
+                displayMoney("You have: $" + str(total))
                 printWord(dashes)
                 if "_" not in dashes:
                     break
@@ -160,7 +178,7 @@ def theGame():
                     if chosenWord[char] == guess:
                         dashes[char] = guess
                         total += amount
-                print("You have: $" + str(total))
+                displayMoney("You have: $" + str(total))
                 printWord(dashes)
                 if "_" not in dashes:
                     break
@@ -176,22 +194,28 @@ def init():
     print("Starting ...")
     global root
     global screen_width, screen_height
-    global infoDisplay, wordDisplay, letterGuessEntry, submitButton
+    global infoDisplay, wordDisplay, letterGuessEntry, submitButton, moneyDisplay
     global dashes, total
 
     # This is a label
-    wordDisplay = Label(root, text="This is a test label", height=3, width=25)
-    wordDisplay.configure(background='blue')
+    wordDisplay = Label(root, text="Loading...", height=2, width=30)
+    wordDisplay.configure(background='darkblue')
     wordDisplay.configure(font=("Arial", 50))
     wordDisplay.configure(foreground='white')
     wordDisplay.place(relx=0.1, rely=0.05, anchor=NW)
     
     # somehow thre infoDisplay is not becoming global
-    infoDisplay = Label(root, text="InfoBox", height=3, width=25)
+    infoDisplay = Label(root, text="Loading...", height=2, width=25)
     infoDisplay.configure(background='purple')
     infoDisplay.configure(font=("Arial", 40))
     infoDisplay.configure(foreground='white')
     infoDisplay.place(relx=0.1, rely=0.35, anchor=NW)
+    
+    moneyDisplay = Label(root, text="$$$", height=1, width=20)
+    moneyDisplay.configure(background='orange')
+    moneyDisplay.configure(font=("Arial", 40))
+    moneyDisplay.configure(foreground='white')
+    moneyDisplay.place(relx=0.1, rely=0.55, anchor=NW)
 
     letterGuessEntry = Entry(root, font = "Helvetica 60")
     letterGuessEntry.place(relx=0.10, rely=0.7, height=100, width=70, anchor=NW)
