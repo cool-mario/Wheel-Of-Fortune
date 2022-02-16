@@ -23,6 +23,7 @@ total = 0   # total $$$$
 
 wordDisplay = ""  # displays the dashes
 infoDisplay = ""  # the label that shows the information like how much each letter costs
+moreInfoDisplay = ""  # MORE INFO!!!!!
 moneyDisplay = ""  # shows how much money you have, or the score
 
 letterGuessEntry = ""  # entry box to guess letters
@@ -93,6 +94,13 @@ def displayInfo(textInfo):
     global infoDisplay, root
     infoDisplay['text'] = textInfo
     
+def displayMoreInfo(textInfo):
+    global moreInfoDisplay
+    if "won" in textInfo:
+        moreInfoDisplay.configure(font=("Arial", 50))
+    moreInfoDisplay['text'] = textInfo
+    
+    
 def displayMoney(textInfo):
     global moneyDisplay
     moneyDisplay['text'] = textInfo
@@ -106,7 +114,7 @@ def submitButtonClick():
     
 
 def theGame():
-    global total, guess, alphabet, buttonPressed, moneyDisplay
+    global total, guess, alphabet, buttonPressed, moneyDisplay, moreInfoDisplay
     # Keep guessing until word is guessed correctlyh434gtr43fr4t5styht34ahystr4a5s
     while True:
         while True:
@@ -162,7 +170,7 @@ def theGame():
                 break
             # If user guesses letter they've already guessed
             elif guess not in alphabet:
-                print("You've already picked that letter!")
+                displayMoreInfo("You've already \npicked that letter!")
                 print("You have: $" + str(total))
             # If guess is a vowel, subtract $500 from total per vowel
             elif guess in vowels:
@@ -174,7 +182,7 @@ def theGame():
                             dashes[char] = guess
                 # If user cannot buy vowel
                 else:
-                    print("Not enough money")
+                    displayMoreInfo("Not enough money")
                 displayMoney("You have: $" + str(total))
                 printWord(dashes)
                 if "_" not in dashes:
@@ -192,7 +200,7 @@ def theGame():
                     break
         # If word or phrase is fully guessed, end game
         if "_" not in dashes:
-            print("You won!")
+            displayMoreInfo("You won!")
             break
 
 ###################################################
@@ -202,7 +210,7 @@ def init():
     print("Starting ...")
     global root
     global screen_width, screen_height
-    global infoDisplay, wordDisplay, letterGuessEntry, submitButton, moneyDisplay
+    global infoDisplay, wordDisplay, letterGuessEntry, submitButton, moneyDisplay, moreInfoDisplay
     global dashes, total
 
     # This is a label
@@ -219,17 +227,23 @@ def init():
     infoDisplay.configure(foreground='white')
     infoDisplay.place(relx=0.1, rely=0.35, anchor=NW)
     
-    moneyDisplay = Label(root, text="$$$", height=1, width=20)
+    moneyDisplay = Label(root, text="you have: $0", height=1, width=20)
     moneyDisplay.configure(background='orange')
     moneyDisplay.configure(font=("Arial", 40))
     moneyDisplay.configure(foreground='white')
     moneyDisplay.place(relx=0.1, rely=0.55, anchor=NW)
+    
+    moreInfoDisplay = Label(root, text="", height=1, width=15)
+    moreInfoDisplay.configure(background='crimson')
+    moreInfoDisplay.configure(font=("Arial", 20))
+    moreInfoDisplay.configure(foreground='white')
+    moreInfoDisplay.place(relx=0.5, rely=0.7, anchor=NW)
 
     letterGuessEntry = Entry(root, font = "Helvetica 60")
     letterGuessEntry.place(relx=0.10, rely=0.7, height=100, width=70, anchor=NW)
     
     submitButton = Button(root, text="Submit guess", font="arial 20", height=3, width=10, command=submitButtonClick)
-    submitButton.place(relx=0.55, rely=0.70, anchor=NW)
+    submitButton.place(relx=0.25, rely=0.70, anchor=NW)
 
     # Capture keystrokes here
     root.bind("<Key>", key_pressed)
