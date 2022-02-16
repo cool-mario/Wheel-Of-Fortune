@@ -86,6 +86,11 @@ def key_pressed(event):
         print("Key Value:   " + str(x))
     except:
         print("strange character pressed")
+    
+    if x == 13:
+        global buttonPressed
+        buttonPressed = True
+        print("guess submitted")
 
     str1 = "You pressed " + event.char
     #wordDisplay['text'] = str1
