@@ -37,13 +37,13 @@ alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'
 # Categories and chosenWords
 categories = {'color': ['red', 'green' ,'blue','yellow','turqouise','purple','indigo','white','black'], 'phrase':["it's raining cats and dogs", "speak of the devil", "the best of both worlds", "see eye to eye","when pigs fly", "costs an arm and a leg","once in a blue moon", "a piece of cake", "let the cat out of the bag", "feeling under the weather", "kill two birds with one stone"]}
 
+
 vowels = ["A", "E", "I", "O", "U"]
 
 # Pick a random category
 randChosenCategory = random.randint(0, (len(categories) - 1)) # color or phrase
 
-# Print randChosenCategory name
-print("Category:", list(categories.keys())[randChosenCategory])
+
 
 # Get a random chosenWord or phrase from the category
 chosenWord = (
@@ -94,10 +94,9 @@ def displayInfo(textInfo):
     global infoDisplay, root
     infoDisplay['text'] = textInfo
     
-def displayMoreInfo(textInfo):
+def displayMoreInfo(textInfo, textSize=20):
     global moreInfoDisplay
-    if "won" in textInfo:
-        moreInfoDisplay.configure(font=("Arial", 50))
+    moreInfoDisplay.configure(font=("Arial", textSize))
     moreInfoDisplay['text'] = textInfo
     
     
@@ -109,8 +108,6 @@ def submitButtonClick():
     global buttonPressed
     buttonPressed = True
     print("guess submitted")
-    
-    
     
 
 def theGame():
@@ -131,6 +128,7 @@ def theGame():
             
             
             buttonPressed = False
+            moreInfoDisplay.configure(text="")
             # If the user wants to guess phrase or word
             if guess == "GUESS":
                 while True:
@@ -152,7 +150,7 @@ def theGame():
                                     ):
                                         total += amount
                     else:
-                        print("Sorry, that's not the answer! Keep guessing!")
+                        displayMoreInfo("Sorry, that's not the answer! \nKeep guessing!")
                         printWord(dashes)
                         break
                     if "_" not in dashes:
@@ -182,7 +180,7 @@ def theGame():
                             dashes[char] = guess
                 # If user cannot buy vowel
                 else:
-                    displayMoreInfo("Not enough money")
+                    displayMoreInfo("Not enough money \n;-;",30)
                 displayMoney("You have: $" + str(total))
                 printWord(dashes)
                 if "_" not in dashes:
@@ -200,7 +198,7 @@ def theGame():
                     break
         # If word or phrase is fully guessed, end game
         if "_" not in dashes:
-            displayMoreInfo("You won!")
+            displayMoreInfo("You won!",50)
             break
 
 ###################################################
@@ -212,38 +210,43 @@ def init():
     global screen_width, screen_height
     global infoDisplay, wordDisplay, letterGuessEntry, submitButton, moneyDisplay, moreInfoDisplay
     global dashes, total
-
+    
+    
     # This is a label
     wordDisplay = Label(root, text="Loading...", height=2, width=30)
     wordDisplay.configure(background='darkblue')
     wordDisplay.configure(font=("Courier New bold", 50))
     wordDisplay.configure(foreground='white')
-    wordDisplay.place(relx=0.1, rely=0.05, anchor=NW)
+    wordDisplay.place(relx=0.05, rely=0.05, anchor=NW)
     
     # somehow thre infoDisplay is not becoming global
     infoDisplay = Label(root, text="Loading...", height=2, width=25)
     infoDisplay.configure(background='purple')
     infoDisplay.configure(font=("Arial", 40))
     infoDisplay.configure(foreground='white')
-    infoDisplay.place(relx=0.1, rely=0.35, anchor=NW)
+    infoDisplay.place(relx=0.05, rely=0.35, anchor=NW)
     
     moneyDisplay = Label(root, text="you have: $0", height=1, width=20)
     moneyDisplay.configure(background='orange')
     moneyDisplay.configure(font=("Arial", 40))
     moneyDisplay.configure(foreground='white')
-    moneyDisplay.place(relx=0.1, rely=0.55, anchor=NW)
+    moneyDisplay.place(relx=0.05, rely=0.55, anchor=NW)
     
-    moreInfoDisplay = Label(root, text="", height=1, width=15)
-    moreInfoDisplay.configure(background='crimson')
+    moreInfoDisplay = Label(root, text="", height=2, width=20)
+    moreInfoDisplay.configure(background='black')
     moreInfoDisplay.configure(font=("Arial", 20))
     moreInfoDisplay.configure(foreground='white')
-    moreInfoDisplay.place(relx=0.5, rely=0.7, anchor=NW)
+    moreInfoDisplay.place(relx=0.4, rely=0.7, anchor=NW)
+    
+    # Print randChosenCategory name
+    displayMoreInfo("Category: " + list(categories.keys())[randChosenCategory],30)
 
-    letterGuessEntry = Entry(root, font = "Helvetica 60")
-    letterGuessEntry.place(relx=0.10, rely=0.7, height=100, width=70, anchor=NW)
+    letterGuessEntry = Entry(root)
+    letterGuessEntry.configure(font=("Arial", 100))
+    letterGuessEntry.place(relx=0.05, rely=0.7, height=100, width=100, anchor=NW)
     
     submitButton = Button(root, text="Submit guess", font="arial 20", height=3, width=10, command=submitButtonClick)
-    submitButton.place(relx=0.25, rely=0.70, anchor=NW)
+    submitButton.place(relx=0.23, rely=0.70, anchor=NW)
 
     # Capture keystrokes here
     root.bind("<Key>", key_pressed)
