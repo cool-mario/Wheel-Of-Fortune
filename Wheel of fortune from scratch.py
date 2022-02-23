@@ -1,7 +1,7 @@
 # Write your code here :-)
 ###################################################
 # Filename: wheel of fortune.py
-# Author:   Aidan C
+# Author:   Aidan C and Evan M
 # Date:     Feb, 2022
 #
 # Do not use repl.it - use your own laptop/computer
@@ -62,6 +62,8 @@ print(chosenWord)
 
 # Function to print Word
 def printWord(chosenWord):
+    global displayWidth, wordDisplay
+
     thing = ""
     for char in chosenWord:
         thing += char + " "
@@ -73,7 +75,12 @@ def printWord(chosenWord):
         fontSize = 50
     if fontSize < 30:
         fontSize = 30
-    wordDisplay.configure(width=len(thing), font=("Courier new bold", fontSize))
+
+    displayWidth = len(thing)
+    if displayWidth < 20:
+        displayWidth = 15
+    wordDisplay.configure(width=displayWidth, font=("Courier new bold", fontSize))
+
 
 
 # We use this to capture the key's pressed
@@ -86,7 +93,7 @@ def key_pressed(event):
         print("Key Value:   " + str(x))
     except:
         print("strange character pressed")
-    
+
     if x == 13:
         global buttonPressed
         buttonPressed = True
@@ -98,13 +105,13 @@ def key_pressed(event):
 def displayInfo(textInfo):
     global infoDisplay, root
     infoDisplay['text'] = textInfo
-    
+
 def displayMoreInfo(textInfo, textSize=20):
     global moreInfoDisplay
     moreInfoDisplay.configure(font=("Arial", textSize))
     moreInfoDisplay['text'] = textInfo
-    
-    
+
+
 def displayMoney(textInfo):
     global moneyDisplay
     moneyDisplay['text'] = textInfo
@@ -113,7 +120,7 @@ def submitButtonClick():
     global buttonPressed
     buttonPressed = True
     print("guess submitted")
-    
+
 
 def theGame():
     global total, guess, alphabet, buttonPressed, moneyDisplay, moreInfoDisplay
@@ -130,8 +137,8 @@ def theGame():
                 guess = letterGuessEntry.get().upper()
                 #print(len(guess))
                 #print(buttonPressed)
-            
-            
+
+
             buttonPressed = False
             moreInfoDisplay.configure(text="")
             # If the user wants to guess phrase or word
@@ -215,41 +222,41 @@ def init():
     global screen_width, screen_height
     global infoDisplay, wordDisplay, letterGuessEntry, submitButton, moneyDisplay, moreInfoDisplay
     global dashes, total
-    
-    
+
+
     # This is a label
-    wordDisplay = Label(root, text="Loading...", height=2, width=30)
+    wordDisplay = Label(root, text="Loading...", height=2, width=20)
     wordDisplay.configure(background='darkblue')
     wordDisplay.configure(font=("Courier New bold", 50))
     wordDisplay.configure(foreground='white')
     wordDisplay.place(relx=0.05, rely=0.05, anchor=NW)
-    
+
     # somehow thre infoDisplay is not becoming global
-    infoDisplay = Label(root, text="Loading...", height=2, width=25)
+    infoDisplay = Label(root, text="Loading...", height=2, width=20)
     infoDisplay.configure(background='purple')
     infoDisplay.configure(font=("Arial", 40))
     infoDisplay.configure(foreground='white')
     infoDisplay.place(relx=0.05, rely=0.35, anchor=NW)
-    
+
     moneyDisplay = Label(root, text="you have: $0", height=1, width=20)
     moneyDisplay.configure(background='orange')
     moneyDisplay.configure(font=("Arial", 40))
     moneyDisplay.configure(foreground='white')
     moneyDisplay.place(relx=0.05, rely=0.55, anchor=NW)
-    
+
     moreInfoDisplay = Label(root, text="", height=2, width=20)
     moreInfoDisplay.configure(background='black')
     moreInfoDisplay.configure(font=("Arial", 20))
     moreInfoDisplay.configure(foreground='white')
     moreInfoDisplay.place(relx=0.4, rely=0.7, anchor=NW)
-    
+
     # Print randChosenCategory name
     displayMoreInfo("Category: " + list(categories.keys())[randChosenCategory],30)
 
     letterGuessEntry = Entry(root)
     letterGuessEntry.configure(font=("Arial", 100))
     letterGuessEntry.place(relx=0.05, rely=0.7, height=100, width=100, anchor=NW)
-    
+
     submitButton = Button(root, text="Submit guess", font="arial 20", height=3, width=10, command=submitButtonClick)
     submitButton.place(relx=0.23, rely=0.70, anchor=NW)
 
@@ -264,10 +271,10 @@ def init():
             dashes.append(char)  # if not a letter print it out like a ' or "
 
     printWord(dashes)
-    
+
     x = threading.Thread(target=theGame, daemon=True)  # what deamon?
     x.start()  # start the thread to the main game
-    
+
     # This runs forever, waiting for mouse clicks
     root.mainloop()
 
