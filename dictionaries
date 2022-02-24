@@ -1,0 +1,11 @@
+categories = {
+'Strange Sayings': ["straighten the horns and kill the bull", 'there is no cow on the ice', 'not my circus, not my monkeys', 'god gives nuts to the man with no teeth'], 
+'Famous Monkeys': ['donkey kong', 'harambe', 'curious george', 'king kong', 'mmm monke'], 
+'Countries of the Eurasian Continent': ['germany', 'finland', 'uzbekistan', 'indonesia', 'malaysia'],
+'Countries that do not exist': ['northwest korea', 'france', 'saint jose', 'australia', 'west virginia', 'africa', 'elephant', 'greenland', 'the popemobile', 'bremmstrahlung'],
+'Popular Video Games': ['tetris', 'minecraft', 'super mario brothers', 'raid shadow legends', 'pokemon', 'among us', 'undertale', 'five nights at freddys'],
+'Board Games': ['monopoly', 'sorry', 'trouble', 'settlers of catan', 'clue', 'the game of life', 'operation', 'scrabble', 'chess']
+}
+
+
+## We can make something that slows down the velocity of the wheel so it hits zero at some point that we decide beforehand. When spin wheel is clicked, a random number generator decides which place will be chosen, and that spot on the wheel will get a certain value, from 0-24. Each slice has an equal chance to be selected, and the wheel will spin and land on that slice chosen. It will then set the money per letter to that value, and will change when spun again.
