@@ -32,11 +32,19 @@ buttonPressed = False
 
 guess = ""   # this will be what the user guessed
 
+font = "Futura"  # *smirks*
+
 # List of letters to remove after each guess
 alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W','X', 'Y', 'Z']
 # Categories and chosenWords
-categories = {'color': ['red', 'green' ,'blue','yellow','turqouise','purple','indigo','white','black'], 'phrase':["it's raining cats and dogs", "speak of the devil", "the best of both worlds", "see eye to eye","when pigs fly", "costs an arm and a leg","once in a blue moon", "a piece of cake", "let the cat out of the bag", "feeling under the weather", "kill two birds with one stone"]}
-
+categories = {
+'Strange Sayings': ["straighten the horns and kill the bull", 'there is no cow on the ice', 'not my circus, not my monkeys', 'god gives nuts to the man with no teeth'], 
+'Famous Monkeys': ['donkey kong', 'harambe', 'curious george', 'king kong', 'mmm monke'], 
+'Countries of the Eurasian Continent': ['germany', 'finland', 'uzbekistan', 'indonesia', 'malaysia'],
+'Countries that do not exist': ['northwest korea', 'france', 'saint jose', 'australia', 'west virginia', 'africa', 'elephant', 'greenland', 'the popemobile', 'bremmstrahlung'],
+'Popular Video Games': ['tetris', 'minecraft', 'super mario brothers', 'raid shadow legends', 'pokemon', 'among us', 'undertale', 'five nights at freddys'],
+'Board Games': ['monopoly', 'sorry', 'trouble', 'settlers of catan', 'clue', 'the game of life', 'operation', 'scrabble', 'chess']
+}
 
 vowels = ["A", "E", "I", "O", "U"]
 
@@ -108,7 +116,7 @@ def displayInfo(textInfo):
 
 def displayMoreInfo(textInfo, textSize=20):
     global moreInfoDisplay
-    moreInfoDisplay.configure(font=("Arial", textSize))
+    moreInfoDisplay.configure(font=(font, textSize))
     moreInfoDisplay['text'] = textInfo
 
 
@@ -234,31 +242,31 @@ def init():
     # somehow thre infoDisplay is not becoming global
     infoDisplay = Label(root, text="Loading...", height=2, width=20)
     infoDisplay.configure(background='purple')
-    infoDisplay.configure(font=("Arial", 40))
+    infoDisplay.configure(font=(font, 40))
     infoDisplay.configure(foreground='white')
     infoDisplay.place(relx=0.05, rely=0.35, anchor=NW)
 
     moneyDisplay = Label(root, text="you have: $0", height=1, width=20)
     moneyDisplay.configure(background='orange')
-    moneyDisplay.configure(font=("Arial", 40))
+    moneyDisplay.configure(font=(font, 40))
     moneyDisplay.configure(foreground='white')
     moneyDisplay.place(relx=0.05, rely=0.55, anchor=NW)
 
     moreInfoDisplay = Label(root, text="", height=2, width=20)
     moreInfoDisplay.configure(background='black')
-    moreInfoDisplay.configure(font=("Arial", 20))
+    moreInfoDisplay.configure(font=(font, 20))
     moreInfoDisplay.configure(foreground='white')
     moreInfoDisplay.place(relx=0.4, rely=0.7, anchor=NW)
 
     # Print randChosenCategory name
-    displayMoreInfo("Category: " + list(categories.keys())[randChosenCategory],30)
+    displayMoreInfo("Category:\n" + list(categories.keys())[randChosenCategory],30)
 
     letterGuessEntry = Entry(root)
-    letterGuessEntry.configure(font=("Arial", 100))
+    letterGuessEntry.configure(font=(font, 100))
     letterGuessEntry.place(relx=0.05, rely=0.7, height=100, width=100, anchor=NW)
 
-    submitButton = Button(root, text="Submit guess", font="arial 20", height=3, width=10, command=submitButtonClick)
-    submitButton.place(relx=0.23, rely=0.70, anchor=NW)
+    submitButton = Button(root, text="Submit guess", font=font + " 20", height=2, width=10, command=submitButtonClick)
+    submitButton.place(relx=0.21, rely=0.70, anchor=NW)
 
     # Capture keystrokes here
     root.bind("<Key>", key_pressed)
