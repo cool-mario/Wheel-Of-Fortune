@@ -37,13 +37,16 @@ font = "Futura"  # *smirks*
 # List of letters to remove after each guess
 alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W','X', 'Y', 'Z']
 # Categories and chosenWords
-categories = {
-'Strange Sayings': ["straighten the horns and kill the bull", 'there is no cow on the ice', 'not my circus, not my monkeys', 'god gives nuts to the man with no teeth'], 
-'Famous Monkeys': ['donkey kong', 'harambe', 'curious george', 'king kong', 'mmm monke'], 
+"""categories = {
+'Strange Sayings': ["straighten the horns and kill the bull", 'there is no cow on the ice', 'not my circus, not my monkeys', 'god gives nuts to the man with no teeth'],
+'Famous Monkeys': ['donkey kong', 'harambe', 'curious george', 'king kong', 'mmm monke'],
 'Countries of the Eurasian Continent': ['germany', 'finland', 'uzbekistan', 'indonesia', 'malaysia'],
 'Countries that do not exist': ['northwest korea', 'france', 'saint jose', 'australia', 'west virginia', 'africa', 'elephant', 'greenland', 'the popemobile', 'bremmstrahlung'],
 'Popular Video Games': ['tetris', 'minecraft', 'super mario brothers', 'raid shadow legends', 'pokemon', 'among us', 'undertale', 'five nights at freddys'],
 'Board Games': ['monopoly', 'sorry', 'trouble', 'settlers of catan', 'clue', 'the game of life', 'operation', 'scrabble', 'chess']
+}"""
+categories = {
+'Stupid Animals': ['pig', 'cow', 'horse', 'fish', 'dog', 'cat', 'monke', 'jeff', 'grant scanlan']
 }
 
 vowels = ["A", "E", "I", "O", "U"]
@@ -88,6 +91,8 @@ def printWord(chosenWord):
     if displayWidth < 20:
         displayWidth = 15
     wordDisplay.configure(width=displayWidth, font=("Courier new bold", fontSize))
+
+    print("word Display updated")
 
 
 
@@ -264,9 +269,11 @@ def init():
     letterGuessEntry = Entry(root)
     letterGuessEntry.configure(font=(font, 100))
     letterGuessEntry.place(relx=0.05, rely=0.7, height=100, width=100, anchor=NW)
+    letterGuessEntry.configure(background= "gray15", foreground="white",highlightbackground = "gray30", highlightcolor= "red")
 
     submitButton = Button(root, text="Submit guess", font=font + " 20", height=2, width=10, command=submitButtonClick)
     submitButton.place(relx=0.21, rely=0.70, anchor=NW)
+    submitButton.configure(bg="blue") # doesn't work???
 
     # Capture keystrokes here
     root.bind("<Key>", key_pressed)
@@ -297,3 +304,27 @@ root.title("Wheel of Fortune!!!")
 root.configure(background='black')
 
 init()
+
+
+class SimpleApp(object):
+    def __init__(self, master, filename, **kwargs):
+        self.master = master
+        self.filename = filename
+        self.canvas = tk.Canvas(master, width=500, height=500)
+        self.canvas.pack()
+
+        self.update = self.draw().__next__
+        master.after(100, self.update)
+
+    def draw(self):
+        image = Image.open(self.filename)
+        angle = 0
+        while True:
+            tkimage = ImageTk.PhotoImage(image.rotate(angle))
+            canvas_obj = self.canvas.create_image(
+                250, 250, image=tkimage)
+            self.master.after_idle(self.update)
+            yield
+            self.canvas.delete(canvas_obj)
+            angle += 3
+            angle %= 360
