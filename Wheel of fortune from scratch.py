@@ -11,6 +11,11 @@
 # Imports
 from tkinter import *
 import random, threading, math
+
+import tkinter as tk  # this is all for the wheel
+from PIL import ImageTk
+from PIL import Image
+
 ###################################################
 
 
@@ -46,7 +51,7 @@ alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'
 'Board Games': ['monopoly', 'sorry', 'trouble', 'settlers of catan', 'clue', 'the game of life', 'operation', 'scrabble', 'chess']
 }"""
 categories = {
-'Stupid Animals': ['pig', 'cow', 'horse', 'fish', 'dog', 'cat', 'monke', 'jeff', 'grant scanlan']
+'Animals': ['pig', 'cow', 'horse', 'fish', 'dog', 'cat', 'monke', 'jeff', 'grant scanlan']
 }
 
 vowels = ["A", "E", "I", "O", "U"]
@@ -269,7 +274,7 @@ def init():
     letterGuessEntry = Entry(root)
     letterGuessEntry.configure(font=(font, 100))
     letterGuessEntry.place(relx=0.05, rely=0.7, height=100, width=100, anchor=NW)
-    letterGuessEntry.configure(background= "gray15", foreground="white",highlightbackground = "gray30", highlightcolor= "red")
+    letterGuessEntry.configure(background= "gray15", foreground="white", highlightbackground = "gray30", highlightcolor= "red")
 
     submitButton = Button(root, text="Submit guess", font=font + " 20", height=2, width=10, command=submitButtonClick)
     submitButton.place(relx=0.21, rely=0.70, anchor=NW)
@@ -289,7 +294,9 @@ def init():
 
     x = threading.Thread(target=theGame, daemon=True)  # what deamon?
     x.start()  # start the thread to the main game
-
+    
+    app = SimpleApp(root, '/Users/aidan/Desktop/Wheel-Of-Fortune-main/wheel of scanlan.png')
+    
     # This runs forever, waiting for mouse clicks
     root.mainloop()
 
@@ -303,14 +310,11 @@ root.geometry(str(screen_width) + "x" + str(screen_height))
 root.title("Wheel of Fortune!!!")
 root.configure(background='black')
 
-init()
-
-
 class SimpleApp(object):
     def __init__(self, master, filename, **kwargs):
         self.master = master
         self.filename = filename
-        self.canvas = tk.Canvas(master, width=500, height=500)
+        self.canvas = tk.Canvas(master, width=50, height=50)
         self.canvas.pack()
 
         self.update = self.draw().__next__
@@ -328,3 +332,5 @@ class SimpleApp(object):
             self.canvas.delete(canvas_obj)
             angle += 3
             angle %= 360
+
+init()
