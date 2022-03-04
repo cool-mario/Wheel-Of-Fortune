@@ -1,41 +1,41 @@
+# Write your code here :-)
 ###################################################
 # Filename: wheel of fortune.py
 # Author:   Aidan C and Evan M
-# Date:     March 3, 2022
+# Date:     Feb, 2022
+#
+# Do not use repl.it - use your own laptop/computer
+# or use the Mu Editor
 
 ###################################################
 # Imports
 from tkinter import *
-import random, threading, math, time
-
+import random, threading, math
 ###################################################
 
 
 # Global Variables
+
 screen_width      = 800        # The window height and width in pixels
 screen_height     = 600
-amounts = [500, 750, 1000, 1250, 1500, 1750, 5000] #
-total = 0   # total money
+amounts = [500, 750, 1000, 1250, 1500, 1750, 5000]
+total = 0   # total $$$$
 
-wordDisplay = ""      # displays the dashes
-infoDisplay = ""      # the label that shows the information like how much each letter costs
-moreInfoDisplay = ""  # More information like "you aready chose this word!"
-moneyDisplay = ""     # shows how much money you have, or the score
+wordDisplay = ""  # displays the dashes
+infoDisplay = ""  # the label that shows the information like how much each letter costs
+moreInfoDisplay = ""  # MORE INFO!!!!!
+moneyDisplay = ""  # shows how much money you have, or the score
 
 letterGuessEntry = ""  # entry box to guess letters
-submitButton = ""      # button to submit your guess
+submitButton = ""     # button to submit your guess
 buttonPressed = False
 
 guess = ""   # this will be what the user guessed
 
-font = "Futura"  # the font for the text
+font = "Futura"  # *smirks*
 
 # List of letters to remove after each guess
-alphabet = [
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-
-
+alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W','X', 'Y', 'Z']
 # Categories and chosenWords
 """categories = {
 'Strange Sayings': ["straighten the horns and kill the bull", 'there is no cow on the ice', 'not my circus, not my monkeys', 'god gives nuts to the man with no teeth'],
@@ -45,15 +45,15 @@ alphabet = [
 'Popular Video Games': ['tetris', 'minecraft', 'super mario brothers', 'raid shadow legends', 'pokemon', 'among us', 'undertale', 'five nights at freddys'],
 'Board Games': ['monopoly', 'sorry', 'trouble', 'settlers of catan', 'clue', 'the game of life', 'operation', 'scrabble', 'chess']
 }"""
-# categories for demostration
 categories = {
-'Animals': ['pig', 'cow', 'horse', 'fish', 'dog', 'cat', 'monke', 'fish', 'pufferfish']  
+'Stupid Animals': ['pig', 'cow', 'horse', 'fish', 'dog', 'cat', 'monke', 'jeff', 'grant scanlan']
 }
 
 vowels = ["A", "E", "I", "O", "U"]
 
 # Pick a random category
-randChosenCategory = random.randint(0, (len(categories) - 1)) 
+randChosenCategory = random.randint(0, (len(categories) - 1)) # color or phrase
+
 
 
 # Get a random chosenWord or phrase from the category
@@ -92,10 +92,11 @@ def printWord(chosenWord):
         displayWidth = 15
     wordDisplay.configure(width=displayWidth, font=("Courier new bold", fontSize))
 
-    #print("word Display updated")
+    print("word Display updated")
 
 
-# capture the key's pressed
+
+# We use this to capture the key's pressed
 def key_pressed(event):
     global wordDisplay, infoDisplay, root
 
@@ -133,34 +134,27 @@ def submitButtonClick():
     buttonPressed = True
     print("guess submitted")
 
-def revealLetters(guess, money):
-    global total
-    for char in range(len(dashes)):
-        if chosenWord[char] == guess:
-            total += money
-            dashes[char] = guess
 
 def theGame():
     global total, guess, alphabet, buttonPressed, moneyDisplay, moreInfoDisplay
-    
-    # Keep guessing until word is guessed correct
+    # Keep guessing until word is guessed correctlyh434gtr43fr4t5styht34ahystr4a5s
     while True:
-        while True: # while true for each letter guess
-        
+        while True:
             # Pick an random amount from amounts
             amount = amounts[random.randint(0, (len(amounts) - 1))]
             displayInfo("$" + str(amount) + " per correct letter\n$500 per vowel")
-            letterGuessEntry.delete(0,END) # clear the letter guess everytime you guess
+            letterGuessEntry.delete(0,END)
             guess = ""
             print(guess)
             while len(guess) == 0 or (not buttonPressed):
                 guess = letterGuessEntry.get().upper()
-                time.sleep(0.1)
-                
+                #print(len(guess))
+                #print(buttonPressed)
+
+
             buttonPressed = False
             moreInfoDisplay.configure(text="")
             # If the user wants to guess phrase or word
-            """
             if guess == "GUESS":
                 while True:
                     correct = 0
@@ -197,17 +191,18 @@ def theGame():
                     if "_" not in dashes:
                         break
                 break
-            """
             # If user guesses letter they've already guessed
-            if guess not in alphabet:
+            elif guess not in alphabet:
                 displayMoreInfo("You've already \npicked that letter!")
                 print("You have: $" + str(total))
             # If guess is a vowel, subtract $500 from total per vowel
             elif guess in vowels:
                 if total >= 500:
                     alphabet.remove(guess)
-                    
-                    revealLetters(guess, -500)
+                    for char in range(len(dashes)):
+                        if chosenWord[char] == guess:
+                            total -= 500
+                            dashes[char] = guess
                 # If user cannot buy vowel
                 else:
                     displayMoreInfo("Not enough money \n;-;",30)
@@ -215,19 +210,21 @@ def theGame():
                 printWord(dashes)
                 if "_" not in dashes:
                     break
-            # If everything else is False, remove letter from alphabet and replace char in Word with letter in word
+            # If everythin else is False, remove letter from alphabet and replace char in Word with letter in word
             else:
                 alphabet.remove(guess)
-                revealLetters(guess, amount)
-                
+                for char in range(len(dashes)):
+                    if chosenWord[char] == guess:
+                        dashes[char] = guess
+                        total += amount
                 displayMoney("You have: $" + str(total))
                 printWord(dashes)
                 if "_" not in dashes:
                     break
-        # If word or phrase is fully guessed, end game (no dashes showing)
+        # If word or phrase is fully guessed, end game
         if "_" not in dashes:
             displayMoreInfo("You won!",50)
-            break # break ou of loops if won
+            break
 
 ###################################################
 
@@ -240,14 +237,14 @@ def init():
     global dashes, total
 
 
-    # Label to display the dashes
+    # This is a label
     wordDisplay = Label(root, text="Loading...", height=2, width=20)
     wordDisplay.configure(background='darkblue')
     wordDisplay.configure(font=("Courier New bold", 50))
     wordDisplay.configure(foreground='white')
     wordDisplay.place(relx=0.05, rely=0.05, anchor=NW)
 
-    # display information
+    # somehow thre infoDisplay is not becoming global
     infoDisplay = Label(root, text="Loading...", height=2, width=20)
     infoDisplay.configure(background='purple')
     infoDisplay.configure(font=(font, 40))
@@ -272,7 +269,7 @@ def init():
     letterGuessEntry = Entry(root)
     letterGuessEntry.configure(font=(font, 100))
     letterGuessEntry.place(relx=0.05, rely=0.7, height=100, width=100, anchor=NW)
-    letterGuessEntry.configure(background= "gray15", foreground="white", highlightbackground = "gray30", highlightcolor= "red")
+    letterGuessEntry.configure(background= "gray15", foreground="white",highlightbackground = "gray30", highlightcolor= "red")
 
     submitButton = Button(root, text="Submit guess", font=font + " 20", height=2, width=10, command=submitButtonClick)
     submitButton.place(relx=0.21, rely=0.70, anchor=NW)
@@ -293,8 +290,6 @@ def init():
     x = threading.Thread(target=theGame, daemon=True)  # what deamon?
     x.start()  # start the thread to the main game
 
-    #app = SimpleApp(root, '/Users/aidan/Desktop/Wheel-Of-Fortune-main/wheel of scanlan.png')
-
     # This runs forever, waiting for mouse clicks
     root.mainloop()
 
@@ -309,3 +304,27 @@ root.title("Wheel of Fortune!!!")
 root.configure(background='black')
 
 init()
+
+
+class SimpleApp(object):
+    def __init__(self, master, filename, **kwargs):
+        self.master = master
+        self.filename = filename
+        self.canvas = tk.Canvas(master, width=500, height=500)
+        self.canvas.pack()
+
+        self.update = self.draw().__next__
+        master.after(100, self.update)
+
+    def draw(self):
+        image = Image.open(self.filename)
+        angle = 0
+        while True:
+            tkimage = ImageTk.PhotoImage(image.rotate(angle))
+            canvas_obj = self.canvas.create_image(
+                250, 250, image=tkimage)
+            self.master.after_idle(self.update)
+            yield
+            self.canvas.delete(canvas_obj)
+            angle += 3
+            angle %= 360
